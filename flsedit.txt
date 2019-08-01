@@ -1,0 +1,55 @@
+Follow these steps only if URL contains "/StandardFieldAttributes/e"
+
+Step 1 : Run the below code 
+
+    /* Copy from this line */
+    flsStorageProfile = "SALESFORCE#COPY#FLS#HOST:"+window.location.hostname+"#ProfileId:";
+    
+    var query = window.location;
+    var profId = (query+'').split("salesforce.com/")[1].split("/e?")[0];
+    
+    flsStorageProfile += profId;
+    
+    var table = document.getElementsByTagName("input");
+    for (var i = 0; i < table.length; i++) {
+        if(table[i].type == "checkbox" && table[i].checked) {
+            
+            var field = table[i].name;
+            var acc = table[i].title;
+            
+            if(!flsStorageProfile.includes("<"+field+">=R") && acc == "Read Access") {
+                flsStorageProfile += "<"+field+">=R;";
+            } else {
+                flsStorageProfile += "<"+field+">=V;";
+            }
+            
+        }
+    }
+    
+    console.log(flsStorageProfile);
+    /* Copy until this line */
+
+Step 2: the above will print some output, copy that and paste in the below code: 
+
+    /*Copy from this line*/
+    var flsStorageProfile = '*****PASTE HERE THE OUTPUT FROM STEP 1******';
+
+    var inputFields = document.getElementsByTagName("input");
+    for (var i = 0; i < inputFields.length; i++) {
+        if(inputFields[i].type == "checkbox") {
+            
+            var field = inputFields[i].name;
+            var acc = inputFields[i].title;
+            
+            if(flsStorageProfile.includes("<"+field+">=R") && acc == 'Read Access') {
+                inputFields[i].checked = true;
+                inputFields[i].style.outline = '2px solid #3330e5';					
+            } else if(flsStorageProfile.includes("<"+field+">=V") && acc == 'Edit Access'){
+                inputFields[i].checked = true;
+                inputFields[i].style.outline = '2px solid #3330e5';
+            } else {
+                inputFields[i].checked = false;
+            }				
+        }
+    }
+    /*Copy until this line*/
