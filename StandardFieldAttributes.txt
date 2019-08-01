@@ -1,4 +1,4 @@
-Follow these steps only if URL contains "/StandardFieldAttributes/e"
+Follow these steps only if URL contains ".salesforce.com/_ui/common/config/field/StandardFieldAttributes/e"
 
 Step 1 : Run the below code 
 
