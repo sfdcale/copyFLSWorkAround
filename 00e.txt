@@ -1,0 +1,99 @@
+Follow these steps only if URL contains "salesforce.com/00e"
+
+Step 1 : Run the below code 
+
+    /* Copy from this line */
+    var fls = "";
+    
+    flsStorage = "SALESFORCE#COPY#FLS#HOST:"+window.location.hostname+"#ProfileId:";
+    
+    var query = window.location;
+    var profId = (query+'').split("salesforce.com/")[1].split("/e?")[0];
+    
+    flsStorage += profId;
+    
+    var prof = '';
+    var read = '';
+    var edit = '';
+    var thisIsANotRequiredField = false;
+    var elem = document.getElementsByTagName("td");
+    for (var i = 0; i < elem.length; i++) {
+        if(elem[i].id.indexOf('fls_field') > -1) {
+            var parentEle = elem[i].parentElement;
+            if(parentEle.childNodes[0].nodeName == "TD" && parentEle.childNodes[0].id.indexOf('fls_field') > -1) {
+                prof = parentEle.childNodes[0].innerHTML;					
+            }
+            if(parentEle.childNodes[1].nodeName == "TD" && parentEle.childNodes[1].firstChild.nodeName == 'INPUT' && parentEle.childNodes[1].firstChild.type == 'checkbox') {
+                //read = parentEle.childNodes[1].firstChild.checked;
+                if(parentEle.childNodes[1].firstChild.checked) {
+                    fls += prof+";";
+                    flsStorage += "<"+prof+">=R;";
+                }
+            }
+            if(parentEle.childNodes[2].nodeName == "TD" && parentEle.childNodes[2].firstChild.nodeName == 'INPUT' && parentEle.childNodes[2].firstChild.type == 'checkbox') {
+                //edit = parentEle.childNodes[2].firstChild.checked;
+                if(parentEle.childNodes[2].firstChild.checked) {
+                    flsStorage += "<"+prof+">=V;";
+                }
+            }
+            //alert(prof+'  '+read+'  '+edit);
+            //alert(elem[i].parentElement.innerHTML);
+        }
+    }
+    
+    console.log(flsStorage);
+    /* Copy until this line */
+
+Step 2: the above will print some output, copy that and paste in the below code: 
+
+    /*Copy from this line*/
+    var flsStorage = '*****PASTE HERE THE OUTPUT FROM STEP 1******';
+
+    var prof = '';
+    var read = '';
+    var edit = '';
+    var thisIsANotRequiredField = false;
+    var elem = document.getElementsByTagName("td");
+    for (var i = 0; i < elem.length; i++) {
+        if(elem[i].id.indexOf('fls_field') > -1) {
+            var parentEle = elem[i].parentElement;
+            if(parentEle.childNodes[0].nodeName == "TD" && parentEle.childNodes[0].id.indexOf('fls_field') > -1) {
+                prof = parentEle.childNodes[0].innerHTML;					
+            }
+            if(parentEle.childNodes[1].nodeName == "TD" && parentEle.childNodes[1].firstChild.nodeName == 'INPUT' && parentEle.childNodes[1].firstChild.type == 'checkbox') {
+                if(flsStorage == 'no fls') {
+                    
+                    parentEle.childNodes[1].firstChild.checked = false;
+                    
+                } else {
+                    if(flsStorage.indexOf("<"+prof+">=R") > -1) {
+                        parentEle.childNodes[1].firstChild.checked = true;
+                        parentEle.childNodes[1].firstChild.style.outline = '2px solid #3330e5';
+                        //alert(prof+"=R" + "   " +flsStorage.indexOf(prof+"=R")+ "   Copy = "+parentEle.childNodes[1].firstChild.checked);
+                    } else {
+                        parentEle.childNodes[1].firstChild.checked = false;
+                        //alert(prof+"=R" + "   " +flsStorage.indexOf(prof+"=R")+ "   ELSE Copy = "+parentEle.childNodes[1].firstChild.checked);
+                    }
+                }
+            }
+            if(parentEle.childNodes[2].nodeName == "TD" && parentEle.childNodes[2].firstChild.nodeName == 'INPUT' && parentEle.childNodes[2].firstChild.type == 'checkbox') {
+                if(flsStorage == 'no fls') {
+                    
+                    parentEle.childNodes[2].firstChild.checked = false;
+                    
+                } else {
+                    if(flsStorage.indexOf("<"+prof+">=V") > -1) {
+                        parentEle.childNodes[2].firstChild.checked = true;
+                        parentEle.childNodes[2].firstChild.style.outline = '2px solid #3330e5';
+                        //alert(prof+"=V" + "   " +flsStorage.indexOf(prof+"=V")+ "   Copy = "+parentEle.childNodes[2].firstChild.checked);
+                    } else {
+                        parentEle.childNodes[2].firstChild.checked = false;
+                        //alert(prof+"=V" + "   " +flsStorage.indexOf(prof+"=V")+ "   ELSE Copy = "+parentEle.childNodes[2].firstChild.checked);
+                    }
+                }
+            }
+            //alert(prof+'  '+read+'  '+edit);
+            //alert(elem[i].parentElement.innerHTML);
+        }
+    }
+    /*Copy until this line*/
